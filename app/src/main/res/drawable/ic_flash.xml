@@ -1,5 +1,6 @@
-<vector android:height="32dp" android:tint="#FFFFFF"
-    android:viewportHeight="24" android:viewportWidth="24"
-    android:width="32dp" xmlns:android="http://schemas.android.com/apk/res/android">
-    <path android:fillColor="@android:color/white" android:pathData="M7,2v11h3v9l7,-12h-4l4,-8z"/>
-</vector>
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true" android:drawable="@drawable/ic_flash_on" />
+    <item android:state_focused="true" android:drawable="@drawable/ic_flash_on" />
+    <item android:drawable="@drawable/ic_flash_off" />
+</selector>

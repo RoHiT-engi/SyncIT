@@ -89,33 +89,7 @@ public class GallaryPreview extends FragmentActivity {
             CheckButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    AlertDialog.Builder alert = new AlertDialog.Builder(GallaryPreview.this);
-                    EditText edittext = new EditText(GallaryPreview.this);
-                    alert.setMessage("Enter PDF name");
-                    alert.setTitle("Your PDF is ready");
 
-                    alert.setView(edittext);
-
-                    alert.setPositiveButton("Proceed", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int whichButton) {
-                            String YourEditTextValue = edittext.getText().toString();
-                            if(!YourEditTextValue.isEmpty()){
-
-                            }else{
-                                Toast.makeText(GallaryPreview.this,"Please Provide PDf Name",Toast.LENGTH_SHORT).show();
-                                alert.setCancelable(true);
-                            }
-                        }
-                    });
-
-                    alert.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int whichButton) {
-                            // what ever you want to do with No option.
-                            alert.setCancelable(true);
-                        }
-                    });
-
-                    alert.show();
                 }
             });
 

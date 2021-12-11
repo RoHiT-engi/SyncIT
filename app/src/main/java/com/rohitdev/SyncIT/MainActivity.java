@@ -58,9 +58,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton imageButtonGallery;
     private ImageButton imageButtonReverseCam;
     private ImageButton mTorchStateHandle;
-    private ImageButton mBackButton;
     private Camera camera;
-    private Animation animation;
     private int lensFacing = CameraSelector.LENS_FACING_BACK;
 
     @Override
@@ -120,7 +118,13 @@ public class MainActivity extends AppCompatActivity {
         mTorchStateHandle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                camera.getCameraControl().enableTorch(camera.getCameraInfo().getTorchState().getValue() == TorchState.OFF);
+                if(camera.getCameraInfo().getTorchState().getValue() == TorchState.OFF){
+                    mTorchStateHandle.setImageDrawable(getDrawable(R.drawable.ic_flash_on));
+                    camera.getCameraControl().enableTorch(true);
+                }else{
+                    mTorchStateHandle.setImageDrawable(getDrawable(R.drawable.ic_flash_off));
+                    camera.getCameraControl().enableTorch(false);
+                }
             }
         });
         imageButtonGallery = findViewById(R.id.photo_view_button);
@@ -149,13 +153,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-        mBackButton= (ImageButton) findViewById(R.id.back_button);
-        mBackButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-            }
-        });
 
         cameraExecutor = Executors.newSingleThreadExecutor();
         cameraProviderFuture = ProcessCameraProvider.getInstance(this);

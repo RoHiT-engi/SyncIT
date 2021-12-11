@@ -4,6 +4,13 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/91922/AndroidStudioProjects/SyncIT/app/src/main/res/drawable/ic_back.xml" value="0.19722222222222222" />
+        <entry key="..\:/Users/91922/AndroidStudioProjects/SyncIT/app/src/main/res/drawable/ic_flash.xml" value="0.23703703703703705" />
+        <entry key="..\:/Users/91922/AndroidStudioProjects/SyncIT/app/src/main/res/drawable/ic_flash_off.xml" value="0.23703703703703705" />
+        <entry key="..\:/Users/91922/AndroidStudioProjects/SyncIT/app/src/main/res/drawable/ic_flash_on.xml" value="0.23703703703703705" />
+        <entry key="..\:/Users/91922/AndroidStudioProjects/SyncIT/app/src/main/res/drawable/ic_shutter.xml" value="0.23703703703703705" />
+        <entry key="..\:/Users/91922/AndroidStudioProjects/SyncIT/app/src/main/res/drawable/ic_shutter_focused.xml" value="0.23703703703703705" />
+        <entry key="..\:/Users/91922/AndroidStudioProjects/SyncIT/app/src/main/res/drawable/ic_shutter_normal.xml" value="0.23703703703703705" />
+        <entry key="..\:/Users/91922/AndroidStudioProjects/SyncIT/app/src/main/res/drawable/ic_shutter_pressed.xml" value="0.23703703703703705" />
         <entry key="..\:/Users/91922/AndroidStudioProjects/SyncIT/app/src/main/res/layout/camera_ui.xml" value="0.176" />
         <entry key="..\:/Users/91922/AndroidStudioProjects/SyncIT/app/src/main/res/layout/fragment_gallery.xml" value="0.16893115942028986" />
         <entry key="..\:/Users/91922/AndroidStudioProjects/SyncIT/app/src/main/res/layout/pager_layout.xml" value="0.16893115942028986" />
