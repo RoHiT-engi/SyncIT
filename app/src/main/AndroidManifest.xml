@@ -26,6 +26,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".GallaryPreview"/>
+        <activity android:name=".helper.CropnSave"/>
     </application>
 
 </manifest>

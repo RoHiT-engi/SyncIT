@@ -25,6 +25,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Surface;
 import android.view.View;
 import android.view.animation.Animation;
 import android.widget.ImageButton;
@@ -181,7 +182,7 @@ public class MainActivity extends AppCompatActivity {
 
         preview.setSurfaceProvider(previewView.getSurfaceProvider());
         imageCapture =  new ImageCapture.Builder()
-                .setTargetRotation(previewView.getDisplay().getRotation())
+                .setTargetRotation(Surface.ROTATION_0)
                 .build();
         camera = cameraProvider.bindToLifecycle((LifecycleOwner)this, cameraSelector,imageCapture, preview);
     }
@@ -189,7 +190,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void onCapture(){
         SimpleDateFormat mDateFormat = new SimpleDateFormat("yyyyMMddHHmmss", Locale.US);
-        File photofile = new File(getBatchDirectoryName(), mDateFormat.format(new Date())+ ".jpg");
+        File photofile = new File(getBatchDirectoryName(), mDateFormat.format(new Date())+ ".jpeg");
         ImageCapture.OutputFileOptions outputFileOptions =
                 new ImageCapture.OutputFileOptions.Builder(photofile)
                         .build();
