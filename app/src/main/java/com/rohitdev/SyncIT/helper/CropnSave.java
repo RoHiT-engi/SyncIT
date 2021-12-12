@@ -39,6 +39,7 @@ public class CropnSave extends AppCompatActivity {
         {this.getSupportActionBar().hide();}
         CropLayout cropLayout = (CropLayout) findViewById(R.id.Crop_preview);
         ImageButton btn = (ImageButton) findViewById(R.id.make_crop);
+
         Intent intent = getIntent();
         String uri = intent.getStringExtra("CropUri");
         cropLayout.setUri(Uri.parse(uri));

@@ -31,6 +31,8 @@ android {
 
 dependencies {
     implementation 'com.google.android.gms:play-services-fido:18.1.0'
+    implementation 'androidx.datastore:datastore-rxjava3:1.0.0'
+    implementation 'androidx.datastore:datastore-preferences-rxjava3:1.0.0'
     def camerax_version =  "1.1.0-alpha11"
     implementation 'androidx.appcompat:appcompat:1.4.0'
     implementation 'com.google.android.material:material:1.4.0'
@@ -50,5 +52,7 @@ dependencies {
     implementation "com.google.firebase:firebase-bom:29.0.2"
     // If you want to additionally use the CameraX Extensions library
     implementation "androidx.camera:camera-extensions:1.0.0-alpha31"
+    implementation 'com.firebaseui:firebase-ui-auth:7.2.0'
+    implementation "androidx.datastore:datastore-preferences:1.0.0"
     implementation 'com.github.takusemba:cropme:2.0.8'
 }
