@@ -4,9 +4,13 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.camera.core.Camera;
 import androidx.camera.core.CameraSelector;
+import androidx.camera.core.DisplayOrientedMeteringPointFactory;
+import androidx.camera.core.FocusMeteringAction;
 import androidx.camera.core.ImageCapture;
 import androidx.camera.core.ImageCaptureException;
+import androidx.camera.core.MeteringPoint;
 import androidx.camera.core.Preview;
+import androidx.camera.core.SurfaceOrientedMeteringPointFactory;
 import androidx.camera.core.TorchState;
 import androidx.camera.lifecycle.ProcessCameraProvider;
 import androidx.camera.view.PreviewView;
@@ -22,13 +26,17 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.icu.number.Scale;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.view.Surface;
 import android.view.View;
 import android.view.animation.Animation;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.common.util.concurrent.ListenableFuture;
@@ -61,6 +69,9 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton mTorchStateHandle;
     private Camera camera;
     private int lensFacing = CameraSelector.LENS_FACING_BACK;
+    private ImageView ImageView;
+    private ScaleGestureDetector scaleGestureDetector ;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,8 +117,64 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+
+
     public void startCamera(){
+
+        scaleGestureDetector = new ScaleGestureDetector(this, new ScaleGestureDetector.OnScaleGestureListener() {
+            @Override
+            public boolean onScale(ScaleGestureDetector scaleGestureDetector) {
+                Float scale = camera.getCameraInfo().getZoomState().getValue().getZoomRatio()*scaleGestureDetector.getScaleFactor();
+                camera.getCameraControl().setZoomRatio(scale);
+                return true;
+            }
+
+            @Override
+            public boolean onScaleBegin(ScaleGestureDetector scaleGestureDetector) {
+                return true;
+            }
+
+            @Override
+            public void onScaleEnd(ScaleGestureDetector scaleGestureDetector) {
+
+            }
+        });
+
+
+        ImageView = (ImageView) findViewById(R.id.Focus_View);
         previewView = findViewById(R.id.view_finder);
+        previewView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if(motionEvent.getAction() == MotionEvent.ACTION_DOWN){
+                    ImageView.setVisibility(View.VISIBLE);
+                    ImageView.setX(motionEvent.getX());
+                    ImageView.setY(motionEvent.getY());
+                    ImageView.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            ImageView.setVisibility(View.INVISIBLE);
+                        }
+                    },1000);
+                    return true;
+                }else if(motionEvent.getAction() == MotionEvent.ACTION_UP){
+                    MeteringPoint meteringPoint = new SurfaceOrientedMeteringPointFactory(previewView.getWidth(), previewView.getHeight()).createPoint(motionEvent.getX(),motionEvent.getY());
+
+                    // Prepare focus action to be triggered.
+                    FocusMeteringAction action = new FocusMeteringAction.Builder(meteringPoint).build();
+
+                    camera.getCameraControl().startFocusAndMetering(action);
+                    return true;
+                }else if(scaleGestureDetector.isQuickScaleEnabled()){
+                    scaleGestureDetector.onTouchEvent(motionEvent);
+                    return true;
+                }else {
+                    return false;
+                }
+            }
+        });
+
+
         imageButtonCapture = findViewById(R.id.camera_capture_button);
         imageButtonCapture.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -168,6 +235,8 @@ public class MainActivity extends AppCompatActivity {
             }
         }, ContextCompat.getMainExecutor(this));
     }
+
+
 
 
 

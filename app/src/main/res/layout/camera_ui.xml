@@ -17,6 +17,13 @@
         android:background="#000000">
 
     </androidx.camera.view.PreviewView>
+    <ImageView
+        android:id="@+id/Focus_View"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:visibility="gone"
+        app:srcCompat = "@drawable/ic_filter_center_focus"
+        tools:ignore="MissingConstraints" />
     <ImageButton
         android:id="@+id/camera_Flash_button"
         android:layout_width="32dp"
