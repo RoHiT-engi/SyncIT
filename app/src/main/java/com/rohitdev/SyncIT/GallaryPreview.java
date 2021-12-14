@@ -1,41 +1,29 @@
 package com.rohitdev.SyncIT;
 
-import android.content.ActivityNotFoundException;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager.widget.ViewPager;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.itextpdf.text.DocumentException;
 import com.rohitdev.SyncIT.Adapters.PagerAdapter;
 import com.rohitdev.SyncIT.Transitions.ZoomOutPageTransformer;
 import com.rohitdev.SyncIT.helper.CropnSave;
 
 import java.io.File;
-import java.io.IOException;
 
 public class GallaryPreview extends FragmentActivity {
     private PagerAdapter mPagerAdapter;
@@ -120,12 +108,25 @@ public class GallaryPreview extends FragmentActivity {
             CheckButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(GallaryPreview.this,SyncActivity.class);
-                    startActivity(intent);
+                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                    if(user!=null){
+                        for(File i:imagesFiles){
+                            Intent intent = new Intent(GallaryPreview.this,UploadImages.class);
+                            intent.putExtra("File_path",i.getAbsolutePath());
+                            GallaryPreview.this.startService(intent);
+                        }
+                        Intent intent = new Intent(GallaryPreview.this,MainActivity.class);
+                        startActivity(intent);
+                    }else{
+                        Toast.makeText(GallaryPreview.this,"Login To Proceed Further",Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(GallaryPreview.this,SyncActivity.class);
+                        startActivity(intent);
+                    }
                 }
             });
 
         }else{
+            Setting_btn.setVisibility(View.GONE);
             viewPager.setVisibility(View.GONE);
             DeleteButton.setVisibility(View.GONE);
             CheckButton.setVisibility(View.GONE);
@@ -138,28 +139,31 @@ public class GallaryPreview extends FragmentActivity {
         PopupMenu popup = new PopupMenu(this, v);
         MenuInflater inflater = popup.getMenuInflater();
         inflater.inflate(R.menu.settings_gallery, popup.getMenu());
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                if (item.getItemId() == R.id.logout) {
+                    if(user!=null) {
+                        AuthUI.getInstance()
+                                .signOut(GallaryPreview.this)
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void unused) {
+                                        Toast.makeText(GallaryPreview.this, "Signed Out SucceedFully", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                        return true;
+                    } else {
+                        item.setTitle("Sign In");
+                        Intent intent = new Intent(GallaryPreview.this,SyncActivity.class);
+                        startActivity(intent);
+                    }
+                }
+                return false;
+            }
+        });
         popup.show();
     }
 
-
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (item.getItemId() == R.id.logout) {
-            if (user != null) {
-                SyncActivity syncActivity = new SyncActivity();
-                syncActivity.SignOut();
-                return true;
-            } else {
-                item.setTitle("signIn");
-                Intent intent = new Intent(this, SyncActivity.class);
-                startActivity(intent);
-                return true;
-            }
-        } else {
-            Log.e("Selected Item", item.toString());
-        }
-        return false;
-    }
 }

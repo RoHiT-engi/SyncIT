@@ -27,9 +27,9 @@ import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class SyncActivity extends AppCompatActivity {
-    private FirebaseUser user = null;
     private final ActivityResultLauncher<Intent> signInLauncher = registerForActivityResult(
             new FirebaseAuthUIActivityResultContract(),
             new ActivityResultCallback<FirebaseAuthUIAuthenticationResult>() {
@@ -45,26 +45,31 @@ public class SyncActivity extends AppCompatActivity {
 
     private void onSignInResult(FirebaseAuthUIAuthenticationResult result) {
         IdpResponse response = result.getIdpResponse();
+        signInLauncher.unregister();
         if (result.getResultCode() == RESULT_OK) {
             // Successfully signed in
             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
             Log.e("User",user.getEmail());
+            Toast.makeText(this,"Logged in as "+ user.getEmail(),Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(SyncActivity.this,MainActivity.class);
+            startActivity(intent);
             // ...
         } else {
             // Sign in failed. If response is null the user canceled the
             // sign-in flow using the back button. Otherwise check
             // response.getError().getErrorCode() and handle the error.
             // ...
-
-        }
+            Log.e(String.valueOf(response.getError().getErrorCode()),response.getError().getMessage());
+       }
     }
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
-            Toast.makeText(this,"Aleardy SignedIn",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,"Already SignedIn",Toast.LENGTH_SHORT).show();
         } else {
             Intent signInIntent = AuthUI.getInstance()
                     .createSignInIntentBuilder()
@@ -72,8 +77,6 @@ public class SyncActivity extends AppCompatActivity {
                     .build();
             signInLauncher.launch(signInIntent);
         }
-
-
     }
 
     public void SignOut(){

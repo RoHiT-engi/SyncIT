@@ -11,4 +11,9 @@
     <string name="title_text_Home">Your PDFs Will Appear Here</string>
     <string name="check_button">check Button</string>
     <string name="log_out">Log Out</string>
+    <string name="channel_name">Upload Images</string>
+    <string name="channel_description">UpLoading Images ....</string>
+    <string name="local_service_started">Upload Syncing Started</string>
+    <string name="local_service_stopped">UpLoad Syncing Stopped</string>
+    <string name="local_service_label">Syncing ...</string>
 </resources>
