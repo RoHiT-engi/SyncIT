@@ -3,6 +3,7 @@ package com.rohitdev.SyncIT;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,14 +17,21 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager.widget.ViewPager;
 
 import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.ListResult;
+import com.google.firebase.storage.StorageReference;
+import com.rohitdev.SyncIT.Adapters.FilesAdapter;
 import com.rohitdev.SyncIT.Adapters.PagerAdapter;
 import com.rohitdev.SyncIT.Transitions.ZoomOutPageTransformer;
 import com.rohitdev.SyncIT.helper.CropnSave;
 
 import java.io.File;
+import java.io.Serializable;
+import java.util.List;
 
 public class GallaryPreview extends FragmentActivity {
     private PagerAdapter mPagerAdapter;
@@ -36,6 +44,8 @@ public class GallaryPreview extends FragmentActivity {
     private ImageButton CheckButton,Setting_btn;
     final int PIC_CROP = 1;
     private ImageButton CropBtn;
+    private List<StorageReference> images;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,6 +62,7 @@ public class GallaryPreview extends FragmentActivity {
         DeleteButton = (ImageButton) findViewById(R.id.delete_button);
         CheckButton = (ImageButton) findViewById(R.id.check_button);
         CropBtn = (ImageButton) findViewById(R.id.crop_button);
+
 
         if(imagesFiles!=null && imagesFiles.length!=0 ){
             textView.setVisibility(View.GONE);
@@ -159,6 +170,9 @@ public class GallaryPreview extends FragmentActivity {
                         Intent intent = new Intent(GallaryPreview.this,SyncActivity.class);
                         startActivity(intent);
                     }
+                } else if(item.getItemId()==R.id.File_Explorer){
+                    Intent intent = new Intent(GallaryPreview.this,File_explorer.class);
+                    GallaryPreview.this.startActivity(intent);
                 }
                 return false;
             }

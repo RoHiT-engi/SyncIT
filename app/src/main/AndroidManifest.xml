@@ -30,6 +30,10 @@
         <activity android:name=".GallaryPreview"/>
         <activity android:name=".helper.CropnSave"/>
         <activity android:name=".SyncActivity"/>
+        <activity
+            android:name=".File_explorer"
+            android:screenOrientation="locked"
+            android:parentActivityName=".MainActivity"/>
     </application>
 
 </manifest>

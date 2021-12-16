@@ -16,4 +16,5 @@
     <string name="local_service_started">Upload Syncing Started</string>
     <string name="local_service_stopped">UpLoad Syncing Stopped</string>
     <string name="local_service_label">Syncing ...</string>
+    <string name="file_explorer">File Explorer</string>
 </resources>
