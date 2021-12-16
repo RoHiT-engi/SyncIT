@@ -137,7 +137,6 @@ public class GallaryPreview extends FragmentActivity {
             });
 
         }else{
-            Setting_btn.setVisibility(View.GONE);
             viewPager.setVisibility(View.GONE);
             DeleteButton.setVisibility(View.GONE);
             CheckButton.setVisibility(View.GONE);

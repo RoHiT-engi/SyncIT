@@ -65,7 +65,7 @@ public class File_explorer extends AppCompatActivity {
                                 int spacing = 50; // 50px
                                 boolean includeEdge = true;
                                 recyclerView.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, includeEdge));
-                                filesAdapter = new FilesAdapter(images);
+                                filesAdapter = new FilesAdapter(images,File_explorer.this);
                                 recyclerView.setAdapter(filesAdapter);
                             }
                         }

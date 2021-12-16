@@ -4,6 +4,8 @@ import static java.security.AccessController.getContext;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.util.DisplayMetrics;
@@ -11,14 +13,19 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.StorageReference;
+import com.rohitdev.SyncIT.GallaryPreview;
+import com.rohitdev.SyncIT.MainActivity;
 import com.rohitdev.SyncIT.R;
 import com.squareup.picasso.Picasso;
 
@@ -50,7 +57,41 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesAdapter
                 Picasso.get().load(uri).placeholder(R.drawable.ic_image_black).centerCrop().resize(widthPixels/3,heightPixels/4).into(holder.imageView);
             }
         });
-//        Log.e("Image PAth", String.valueOf(mImages.get(position).getDownloadUrl().getResult()));
+        holder.imageView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                AlertDialog.Builder alert = new AlertDialog.Builder(context);
+                alert.setMessage("Do you want to Delete this Image From Cloud Storage ?");
+
+                alert.setPositiveButton("Proceed", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        mImages.get(holder.getAdapterPosition()).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+                                Toast.makeText(context,"Image Delete From Cloud Storage",Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(context, MainActivity.class);
+                                context.startActivity(intent);
+                            }
+                        });
+                    }
+                });
+
+                alert.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        alert.setCancelable(true);
+                    }
+                });
+
+                alert.show();
+                return true;
+            }
+        });
+        holder.imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(context,"Image Delete From Cloud Storage",Toast.LENGTH_SHORT).show();
+            }
+        });
 
     }
     @Override
@@ -63,10 +104,12 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesAdapter
         public FilesAdapterViewHolder(@NonNull View itemView) {
             super(itemView);
             imageView = (ImageView) itemView.findViewById(R.id.list_item_rv);
+
         }
     }
 
-    public FilesAdapter(List<StorageReference> images){
+    public FilesAdapter(List<StorageReference> images,Context context){
         mImages= images;
+        this.context = context;
     }
 }
