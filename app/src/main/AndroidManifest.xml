@@ -34,6 +34,7 @@
             android:name=".File_explorer"
             android:screenOrientation="locked"
             android:parentActivityName=".MainActivity"/>
+        <activity android:name=".ImageViewerActivity"/>
     </application>
 
 </manifest>

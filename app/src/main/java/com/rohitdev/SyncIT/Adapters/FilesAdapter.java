@@ -25,6 +25,7 @@ import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.StorageReference;
 import com.rohitdev.SyncIT.GallaryPreview;
+import com.rohitdev.SyncIT.ImageViewerActivity;
 import com.rohitdev.SyncIT.MainActivity;
 import com.rohitdev.SyncIT.R;
 import com.squareup.picasso.Picasso;
@@ -33,7 +34,7 @@ import java.util.List;
 
 public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesAdapterViewHolder> {
     List<StorageReference> mImages;
-    Context context;
+    private static Context context;
     @NonNull
     @Override
     public FilesAdapterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -55,6 +56,9 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesAdapter
             public void onSuccess(Uri uri) {
                 Picasso.get().setLoggingEnabled(true);
                 Picasso.get().load(uri).placeholder(R.drawable.ic_image_black).centerCrop().resize(widthPixels/3,heightPixels/4).into(holder.imageView);
+                holder.intent.putExtra("downloadPath",mImages.get(holder.getAdapterPosition()).getPath());
+                holder.intent.putExtra("Filename",mImages.get(holder.getAdapterPosition()).getName());
+                holder.intent.putExtra("ViewUri",uri.toString());
             }
         });
         holder.imageView.setOnLongClickListener(new View.OnLongClickListener() {
@@ -69,8 +73,6 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesAdapter
                             @Override
                             public void onSuccess(Void unused) {
                                 Toast.makeText(context,"Image Delete From Cloud Storage",Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(context, MainActivity.class);
-                                context.startActivity(intent);
                             }
                         });
                     }
@@ -89,7 +91,7 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesAdapter
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(context,"Image Delete From Cloud Storage",Toast.LENGTH_SHORT).show();
+                context.startActivity(holder.intent);
             }
         });
 
@@ -101,15 +103,16 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FilesAdapter
 
     public static class FilesAdapterViewHolder extends RecyclerView.ViewHolder{
         ImageView imageView;
+        Intent intent;
         public FilesAdapterViewHolder(@NonNull View itemView) {
             super(itemView);
             imageView = (ImageView) itemView.findViewById(R.id.list_item_rv);
-
+            intent = new Intent(context,ImageViewerActivity.class);
         }
     }
 
     public FilesAdapter(List<StorageReference> images,Context context){
         mImages= images;
-        this.context = context;
+        FilesAdapter.context = context;
     }
 }

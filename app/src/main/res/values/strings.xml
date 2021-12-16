@@ -17,4 +17,5 @@
     <string name="local_service_stopped">UpLoad Syncing Stopped</string>
     <string name="local_service_label">Syncing ...</string>
     <string name="file_explorer">File Explorer</string>
+    <string name="cloud_download">cloud_Download</string>
 </resources>
