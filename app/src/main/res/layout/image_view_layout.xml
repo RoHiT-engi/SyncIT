@@ -27,6 +27,20 @@
         android:scaleType="fitCenter"
         android:src="@drawable/ic_back" />
     <ImageButton
+        android:id="@+id/share"
+        android:contentDescription="@string/cloud_download"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="@dimen/margin_large"
+        android:layout_marginTop="@dimen/margin_small"
+        android:layout_width="@dimen/round_button_small"
+        android:layout_height="@dimen/round_button_small"
+        android:background="@android:color/transparent"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_share"
+        />
+    <ImageButton
         android:id="@+id/download"
         android:contentDescription="@string/cloud_download"
         app:layout_constraintTop_toTopOf="parent"
